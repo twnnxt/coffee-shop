@@ -59,6 +59,11 @@ const App = props => {
     name={globalState.productCatalogue[obj.id].name}
     quantity={obj.quantity} />)
 
+  const subTotal = globalState.cartContents.reduce((acc, cur) => {
+    console.log(acc, cur)
+    return acc + cur.quantity
+  }, 0)
+
   const handleTogglePage = (page) => {
     page === 'shopping' ? page = 'cart' : page = 'shopping';
     setGlobalState({ ...globalState, page: page })
@@ -66,7 +71,7 @@ const App = props => {
 
   const handleAddOne = (id) => {
     const cartContents = getContentsObj(id);
-    console.log({cartContents})
+    console.log({ cartContents })
     setGlobalState({ ...globalState, cartContents: cartContents });
   }
 
@@ -78,8 +83,8 @@ const App = props => {
   }
 
   const handleEmptyCart = () => {
-    idArr= [];
-    setGlobalState({...globalState, cartContents: []})
+    idArr = [];
+    setGlobalState({ ...globalState, cartContents: [] })
   }
 
   let h1 = 'Add your own beans';
@@ -93,7 +98,12 @@ const App = props => {
         <h1 className="App-title">{h1}</h1>
       </header>
       <button onClick={() => handleTogglePage(globalState.page)}>TOGGLE PAGE</button>
-      {globalState.page === 'shopping' ? null : <button onClick={handleEmptyCart}>EMPTY CART</button>}
+      {globalState.page === 'shopping' ? null :
+        <div>
+          <div>Subtotal: {subTotal}</div>
+          <button onClick={handleEmptyCart}>EMPTY CART</button>
+        </div>
+      }
       {globalState.page === 'shopping' ? beans : cartBeans}
     </div>
   );
